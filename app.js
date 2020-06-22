@@ -35,10 +35,10 @@ app.post("/callback", line.middleware(config), (req, res) => {
 function handleEvent(event) {
     console.log(22222222222, event)
     const message = event.message.text
-    if (event.type !== "message" || event.message.type !== "text") {
-        // ignore non-text-message event
-        return Promise.resolve(null)
-    }
+    // if (event.type !== "message" || event.message.type !== "text") {
+    //     // ignore non-text-message event
+    //     return Promise.resolve(null)
+    // }
     switch (message) {
         case "國五路況查詢":
             return client.replyMessage(event.replyToken, {
@@ -46,9 +46,14 @@ function handleEvent(event) {
                 text: "一路順暢沒塞車，抵達時間約40分鐘",
             })
         case "浪點浪況查詢":
+            return client.replyMessage(
+                event.replyToken,
+                require("./waveLocationTemplate.json")
+            )
+        case "其他建議":
             return client.replyMessage(event.replyToken, {
                 type: "text",
-                text: "請問要查甚麼地方?",
+                text: "請寫下您的建議",
             })
         default:
             // create a echoing text message
