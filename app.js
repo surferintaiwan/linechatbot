@@ -39,11 +39,25 @@ function handleEvent(event) {
         // ignore non-text-message event
         return Promise.resolve(null)
     }
-
-    // create a echoing text message
-    const echo = { type: "text", text: event.message.text }
-    // use reply API
-    return client.replyMessage(event.replyToken, echo)
+    switch (message) {
+        case "國五路況查詢":
+            return client.replyMessage(event.replyToken, {
+                type: "text",
+                text: "一路順暢沒塞車，抵達時間約40分鐘",
+            })
+        case "浪點浪況查詢":
+            return client.replyMessage(event.replyToken, {
+                type: "text",
+                text: "請問要查甚麼地方?",
+            })
+        default:
+            // create a echoing text message
+            const echoMessage =
+                "因為不知道你再說甚麼，所以只能學你說話~~~~~" + message
+            const echo = { type: "text", text: echoMessage }
+            // use reply API
+            return client.replyMessage(event.replyToken, echo)
+    }
 }
 
 app.listen(port, () => {
